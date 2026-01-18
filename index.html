@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickFlow - L'assistant IA de votre documentation interne</title>
+    <title>QuickFlow - Transformez le chaos en documentation</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -17,40 +17,62 @@
 
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
         
+        /* --- Background Tech Grid --- */
         .bg-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
-                              linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(226, 232, 240, 0.5) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
-        
+
+        /* --- Text Gradients --- */
         .text-gradient {
-            background: linear-gradient(135deg, #2563EB 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #2563EB 0%, #0891b2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        /* --- Glass Effect --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        /* Modal Styles */
-        #demoModal {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+        /* --- Custom Animations --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
-        #demoModal.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        /* Effet de scan pour la démo */
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
         }
-        #demoModal:not(.hidden) {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #3b82f6;
+            box-shadow: 0 0 10px #3b82f6;
+            animation: scan 3s linear infinite;
         }
+
+        /* Pulse effect for AI connector */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+        .ai-pulse { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
     
     <script>
@@ -59,11 +81,11 @@
                 extend: {
                     colors: {
                         primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563EB', 700: '#1d4ed8', 900: '#1e3a8a' },
-                        accent: { 400: '#22d3ee', 500: '#10B981' }
+                        slate: { 850: '#151f32', 900: '#0f172a' } 
                     },
                     boxShadow: {
-                        'glow': '0 0 20px rgba(37, 99, 235, 0.15)',
-                        'card': '0 10px 40px -10px rgba(0,0,0,0.05)'
+                        'glow': '0 0 30px rgba(37, 99, 235, 0.2)',
+                        'card': '0 10px 40px -10px rgba(0,0,0,0.08)'
                     }
                 }
             }
@@ -72,25 +94,24 @@
 </head>
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
 
-    <nav class="fixed w-full z-50 transition-all duration-300 glass shadow-sm">
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-panel shadow-sm top-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-accent-400 rounded-xl flex items-center justify-center text-white shadow-lg">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-cyan-500 rounded-lg flex items-center justify-center text-white shadow-lg">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
-                    <span class="font-bold text-xl tracking-tight">QuickFlow<span class="text-primary-600">.io</span></span>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">QuickFlow</span>
                 </div>
                 
                 <div class="hidden md:flex space-x-8">
                     <a href="#probleme" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Problème</a>
-                    <a href="#solution" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Solution</a>
-                    <a href="#temoignages" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Avis</a>
-                    <a href="#contact" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Contact</a>
+                    <a href="#demo" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Comment ça marche</a>
+                    <a href="#prix" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Tarifs</a>
                 </div>
                 
                 <div>
-                    <button onclick="scrollToSignup()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition shadow-glow hover:shadow-lg transform hover:-translate-y-0.5">
+                    <button onclick="scrollToSignup()" class="bg-slate-900 hover:bg-primary-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition shadow-lg transform hover:-translate-y-0.5">
                         Essai Gratuit
                     </button>
                 </div>
@@ -100,107 +121,316 @@
 
     <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div class="absolute inset-0 bg-grid -z-10"></div>
+        <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-primary-200/40 rounded-full blur-[100px] -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-200/40 rounded-full blur-[100px] -z-10"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
             
-            <div data-aos="fade-down" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-8">
-                <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse"></span>
-                <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Nouveau : Intégration Slack & Notion</span>
+            <div data-aos="fade-down" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 shadow-sm mb-8">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                <span class="text-xs font-bold text-blue-700 uppercase tracking-wide">IA v2.0 Disponible</span>
             </div>
 
-            <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-tight">
-                Documentez votre équipe <br class="hidden md:block" />
-                <span class="text-gradient">sans lever le petit doigt.</span>
+            <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                La documentation qui s'écrit<br/>
+                <span class="text-gradient">toute seule.</span>
             </h1>
             
-            <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl mx-auto text-xl text-slate-500 mb-10">
-                L'assistant IA qui transforme vos conversations Slack et notes en procédures standardisées. Centralisez le savoir, oubliez le chaos.
+            <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl mx-auto text-xl text-slate-500 mb-10 leading-relaxed">
+                Ne perdez plus 4h par semaine à rédiger. QuickFlow transforme vos échanges Slack, Teams et vos notes vocales en procédures claires.
             </p>
             
             <div data-aos="fade-up" data-aos-delay="300" class="flex flex-col sm:flex-row justify-center gap-4 mb-20">
-                <button onclick="scrollToSignup()" class="group relative px-8 py-4 bg-primary-600 rounded-full text-white font-bold text-lg shadow-glow hover:bg-primary-700 transition overflow-hidden">
-                    <span class="relative z-10">Démarrer l'essai gratuit</span>
-                    <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                <button onclick="scrollToSignup()" class="px-8 py-4 bg-primary-600 rounded-xl text-white font-bold text-lg shadow-glow hover:bg-primary-700 transition hover:shadow-xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Générer ma première doc
                 </button>
-                
-                <button onclick="openModal()" class="px-8 py-4 bg-white border border-slate-200 rounded-full text-slate-700 font-bold text-lg hover:bg-slate-50 hover:border-slate-300 transition shadow-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-play text-primary-600 text-xs"></i> Démo 1 min
+                <button onclick="document.getElementById('demo').scrollIntoView({behavior: 'smooth'})" class="px-8 py-4 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold text-lg hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+                    Voir la démo
                 </button>
             </div>
 
-            <div data-aos="fade-up" data-aos-delay="400" class="relative max-w-5xl mx-auto">
-                <div class="bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 p-2 transform rotate-1 hover:rotate-0 transition duration-700">
-                    <div class="bg-slate-800 rounded-t-xl px-4 py-3 flex items-center gap-2 border-b border-slate-700">
-                        <div class="flex gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
-                        <div class="ml-4 bg-slate-900 px-3 py-1 rounded text-xs text-slate-400 font-mono flex-1 text-center">app.quickflow.io</div>
-                    </div>
-                    <div class="bg-white rounded-b-xl h-[400px] flex overflow-hidden relative">
-                        <div class="w-64 bg-slate-50 border-r border-slate-200 p-4 hidden md:block">
-                            <div class="h-8 w-32 bg-slate-200 rounded mb-8 animate-pulse"></div>
-                            <div class="space-y-3"><div class="h-4 w-full bg-primary-100 rounded"></div><div class="h-4 w-3/4 bg-slate-200 rounded"></div></div>
-                        </div>
-                        <div class="flex-1 p-8">
-                            <div class="absolute top-10 right-10 bg-white border border-slate-200 shadow-lg px-4 py-3 rounded-xl flex items-center gap-3 animate-bounce">
-                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><i class="fa-solid fa-check"></i></div>
-                                <div><p class="text-xs text-gray-400">IA Status</p><p class="text-sm font-bold text-slate-800">Procédure générée !</p></div>
+            <div data-aos="zoom-in-up" data-aos-delay="400" class="relative max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-0 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-slate-900/5">
+                    
+                    <div class="bg-slate-50 p-6 md:p-10 border-r border-slate-200 relative">
+                        <div class="absolute top-4 left-6 text-xs font-bold text-slate-400 tracking-wider">SOURCE (Slack / Notes)</div>
+                        
+                        <div class="mt-8 space-y-4 font-inter text-sm text-left">
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded bg-purple-600 flex items-center justify-center text-white text-xs font-bold">JD</div>
+                                <div class="space-y-1 w-full">
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="font-bold text-slate-700">John Doe</span>
+                                        <span class="text-xs text-slate-400">10:42 AM</span>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 text-slate-600 w-fit">
+                                        @Team pour déployer en prod, lancer `npm run build`, vérifier Vercel, et SURTOUT vider le cache Redis sinon ça plante 😅
+                                    </div>
+                                </div>
                             </div>
-                            <div class="h-8 w-1/3 bg-slate-800 rounded mb-6"></div>
-                            <div class="space-y-4"><div class="h-4 w-full bg-slate-100 rounded"></div><div class="h-4 w-2/3 bg-slate-100 rounded"></div></div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded bg-pink-500 flex items-center justify-center text-white text-xs font-bold">AS</div>
+                                <div class="space-y-1 w-full">
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="font-bold text-slate-700">Alice Smith</span>
+                                        <span class="text-xs text-slate-400">10:45 AM</span>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 text-slate-600 w-fit">
+                                        Ah oui, et aussi notifier le channel #support une fois que c'est fait.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden md:flex absolute top-1/2 -right-5 z-10 w-10 h-10 bg-primary-600 rounded-full items-center justify-center text-white shadow-lg border-4 border-white ai-pulse">
+                            <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
+
+                    <div class="bg-white p-6 md:p-10 relative text-left">
+                        <div class="absolute top-4 left-6 text-xs font-bold text-primary-600 tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle"></i> GÉNÉRÉ PAR QUICKFLOW
+                        </div>
+
+                        <div class="mt-8 border border-slate-100 rounded-lg p-6 shadow-sm bg-white">
+                            <div class="h-6 w-3/4 bg-slate-800 rounded mb-4"></div> <div class="space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs"><i class="fa-solid fa-1"></i></div>
+                                    <div class="flex-1">
+                                        <div class="h-3 w-1/3 bg-slate-200 rounded mb-2"></div>
+                                        <div class="h-2 w-full bg-slate-100 rounded"></div>
+                                        <div class="mt-2 p-2 bg-slate-50 rounded border border-slate-200 font-mono text-xs text-slate-500">npm run build</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs"><i class="fa-solid fa-2"></i></div>
+                                    <div class="flex-1">
+                                        <div class="h-3 w-1/2 bg-slate-200 rounded mb-2"></div>
+                                        <div class="p-2 bg-yellow-50 border-l-2 border-yellow-400 text-xs text-yellow-800 rounded-r">
+                                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Attention : Vider le cache Redis
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute inset-0 pointer-events-none overflow-hidden rounded-r-2xl">
+                            <div class="scan-line opacity-20"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-center items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition duration-500">
+                    <span class="text-sm font-semibold text-slate-400">S'intègre avec :</span>
+                    <i class="fa-brands fa-slack text-2xl hover:text-[#4A154B]" title="Slack"></i>
+                    <i class="fa-brands fa-microsoft text-2xl hover:text-[#0078D4]" title="Teams"></i>
+                    <i class="fa-solid fa-n text-2xl hover:text-black" title="Notion"></i>
+                    <i class="fa-brands fa-google-drive text-2xl hover:text-[#1EA362]" title="Drive"></i>
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="probleme" class="py-24 bg-slate-50">
+    <section id="probleme" class="py-20 bg-slate-900 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="text-center mb-16">
-                <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">La documentation est votre <span class="text-red-500 decoration-4 underline decoration-red-200">dette technique</span></h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div data-aos="fade-up" class="bg-white p-8 rounded-2xl shadow-card border border-slate-100 text-center">
-                    <div class="text-4xl font-extrabold text-slate-900 mb-2">3,9 h</div>
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">PERDUES / SEMAINE</p>
+            <div class="grid md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-700">
+                <div data-aos="fade-up" class="text-center px-4 py-4">
+                    <div class="text-5xl font-bold text-primary-500 mb-2">3.9h</div>
+                    <p class="text-lg text-slate-300">Perdues par employé/semaine à chercher de l'info.</p>
                 </div>
-                <div data-aos="fade-up" data-aos-delay="100" class="bg-white p-8 rounded-2xl shadow-card border border-slate-100 text-center">
-                    <div class="text-4xl font-extrabold text-slate-900 mb-2">5+ Silos</div>
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">DISPERSION TOTALE</p>
+                <div data-aos="fade-up" data-aos-delay="100" class="text-center px-4 py-4">
+                    <div class="text-5xl font-bold text-red-500 mb-2">91%</div>
+                    <p class="text-lg text-slate-300">Des équipes frustrées par la documentation obsolète.</p>
                 </div>
-                <div data-aos="fade-up" data-aos-delay="200" class="bg-white p-8 rounded-2xl shadow-card border border-slate-100 text-center">
-                    <div class="text-4xl font-extrabold text-slate-900 mb-2">91%</div>
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">FRUSTRATION</p>
+                <div data-aos="fade-up" data-aos-delay="200" class="text-center px-4 py-4">
+                    <div class="text-5xl font-bold text-cyan-400 mb-2">&lt; 2min</div>
+                    <p class="text-lg text-slate-300">Pour créer une procédure parfaite avec QuickFlow.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="solution" class="py-24 bg-white">
+    <section id="demo" class="py-24 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex flex-col lg:flex-row items-center gap-16 mb-24">
-                <div data-aos="fade-right" class="lg:w-1/2">
-                    <div class="bg-slate-900 rounded-2xl p-6 shadow-2xl -rotate-1"><div class="text-white font-mono text-sm">IA Generating draft based on Slack thread #incidents...</div></div>
-                </div>
-                <div data-aos="fade-left" class="lg:w-1/2">
-                    <h3 class="text-3xl font-bold text-slate-900 mb-4">Brouillon Instantané</h3>
-                    <p class="text-lg text-slate-600 mb-6">Ne partez plus d'une page blanche. QuickFlow transforme vos échanges en documentation structurée.</p>
+            <div class="text-center mb-20">
+                <span class="text-primary-600 font-bold tracking-wider uppercase text-sm">Workflow Intelligent</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">De la note vocale au Wiki en 3 étapes</h2>
+            </div>
+
+            <div class="relative">
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -z-10 hidden md:block"></div>
+
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div data-aos="fade-right" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl relative group hover:-translate-y-2 transition duration-300">
+                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-primary-600 text-2xl mb-6 mx-auto group-hover:scale-110 transition">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-center mb-3">1. Capturez</h3>
+                        <p class="text-slate-500 text-center text-sm">Enregistrez une note vocale, transférez un fil Slack ou uploadez vos notes en vrac.</p>
+                    </div>
+
+                    <div data-aos="zoom-in" class="bg-white p-6 rounded-2xl border border-primary-100 shadow-glow relative group hover:-translate-y-2 transition duration-300 z-10">
+                        <div class="absolute -top-3 -right-3 bg-gradient-to-r from-primary-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full animate-bounce">
+                            IA ENGINE
+                        </div>
+                        <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 mx-auto">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-center mb-3">2. L'IA Structure</h3>
+                        <p class="text-slate-500 text-center text-sm">QuickFlow analyse, supprime le bruit, formate le contenu et applique votre charte graphique.</p>
+                    </div>
+
+                    <div data-aos="fade-left" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl relative group hover:-translate-y-2 transition duration-300">
+                        <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 text-2xl mb-6 mx-auto group-hover:scale-110 transition">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-center mb-3">3. Partagez</h3>
+                        <p class="text-slate-500 text-center text-sm">Exportez vers Notion, SharePoint, PDF ou votre intranet en un clic. Centralisation immédiate.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="temoignages" class="py-24 bg-slate-50">
+    <section class="py-24 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-16">Ils ont repris le contrôle</h2>
+            <h2 class="text-3xl font-bold mb-16 text-slate-900">Validé par les équipes terrain</h2>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm"><p class="italic text-slate-600 mb-4">"Le collègue maniaque qu'on n'a pas."</p><p class="font-bold">- Thomas G., Marketing</p></div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm"><p class="italic text-slate-600 mb-4">"Tranquillité d'esprit absolue."</p><p class="font-bold">- Sophie M., RH</p></div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm"><p class="italic text-slate-600 mb-4">"Sauve des vies ou des serveurs."</p><p class="font-bold">- Alexandre M., DevOps</p></div>
+                <div class="bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition text-left">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://i.pravatar.cc/150?img=32" alt="User" class="w-12 h-12 rounded-full">
+                        <div>
+                            <p class="font-bold text-slate-900">Sophie M.</p>
+                            <p class="text-xs text-slate-500 uppercase">DRH @ Startup 50+</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">"Avant, l'onboarding prenait 2 semaines car les processus n'étaient pas écrits. Avec QuickFlow, on a tout documenté en 3 jours."</p>
+                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition text-left relative overflow-hidden border-t-4 border-primary-500">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="User" class="w-12 h-12 rounded-full">
+                        <div>
+                            <p class="font-bold text-slate-900">Thomas G.</p>
+                            <p class="text-xs text-slate-500 uppercase">CTO @ TechFlow</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">"C'est le seul outil qui arrive à comprendre notre jargon technique sur Slack et à en faire une doc propre pour les juniors."</p>
+                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition text-left">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://i.pravatar.cc/150?img=5" alt="User" class="w-12 h-12 rounded-full">
+                        <div>
+                            <p class="font-bold text-slate-900">Sarah L.</p>
+                            <p class="text-xs text-slate-500 uppercase">Responsable Qualité</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed">"Pour les audits ISO, c'est magique. On prouve qu'on a des processus à jour sans y passer nos nuits."</p>
+                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-24 bg-white border-t border-slate-100">
+    <section id="prix" class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-200/20 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-200/20 rounded-full blur-[100px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Une tarification simple et transparente</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Commencez gratuitement. Choisissez votre plan quand votre équipe grandit.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-start">
+                
+                <div data-aos="fade-up" data-aos-delay="100" class="bg-white rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-xl transition duration-300">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-slate-900">Basic</h3>
+                        <p class="text-sm text-slate-500 mt-1">Pour les petites équipes (PME).</p>
+                    </div>
+                    <div class="mb-6 flex items-baseline gap-1">
+                        <span class="text-4xl font-extrabold text-slate-900">49€</span>
+                        <span class="text-slate-500">/mois</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-6 font-mono">Jusqu'à 20 utilisateurs</p>
+                    
+                    <button onclick="scrollToSignup()" class="w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:border-slate-900 hover:text-slate-900 transition mb-8">
+                        Démarrer l'essai
+                    </button>
+
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i> <span>Génération IA illimitée</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i> <span>Export PDF & Markdown</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i> <span>Support email standard</span></li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-2xl relative transform md:-translate-y-4 ring-4 ring-primary-500/20">
+                    <div class="absolute top-0 right-0 bg-gradient-to-r from-primary-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">
+                        POPULAIRE
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-white">Pro</h3>
+                        <p class="text-sm text-slate-400 mt-1">Pour les ETI en structuration.</p>
+                    </div>
+                    <div class="mb-6 flex items-baseline gap-1">
+                        <span class="text-5xl font-extrabold text-white">99€</span>
+                        <span class="text-slate-400">/mois</span>
+                    </div>
+                    <p class="text-xs text-primary-200 mb-6 font-mono">Jusqu'à 100 utilisateurs</p>
+                    
+                    <button onclick="scrollToSignup()" class="w-full py-4 rounded-xl bg-primary-600 text-white font-bold hover:bg-primary-500 shadow-glow transition mb-8">
+                        Choisir le plan Pro
+                    </button>
+
+                    <ul class="space-y-4 text-sm text-slate-300">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span class="font-semibold text-white">Tout du plan Basic</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span>Intégrations Slack/Notion</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span>Templates personnalisés</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span>Support prioritaire</span></li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300" class="bg-white rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-xl transition duration-300">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-slate-900">Enterprise</h3>
+                        <p class="text-sm text-slate-500 mt-1">Grands comptes & sécurité.</p>
+                    </div>
+                    <div class="mb-6 flex items-baseline gap-1">
+                        <span class="text-4xl font-extrabold text-slate-900">199€</span>
+                        <span class="text-slate-500">/mois</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-6 font-mono">Jusqu'à 200 users (+2€/user sup.)</p>
+                    
+                    <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" class="w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition mb-8">
+                        Contacter les ventes
+                    </button>
+
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span class="font-semibold text-slate-900">Tout du plan Pro</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span>Sécurité avancée (SSO)</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span>CSM Dédié</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span>Option On-premise</span></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-24 bg-slate-50 border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="grid lg:grid-cols-2 gap-16">
                 <div data-aos="fade-right">
@@ -210,7 +440,11 @@
                     <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600"><i class="fa-solid fa-envelope"></i></div>
-                            <div><p class="font-bold">Email</p><p class="text-slate-500">hello@quickflow.io</p></div>
+                            <div><p class="font-bold">Email</p><p class="text-slate-500">contact@quickflow.com </p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600"><i class="fa-solid fa-phone"></i></div>
+                            <div><p class="font-bold">Téléphone</p><p class="text-slate-500">+33 7 80 04 02 62 </p></div>
                         </div>
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600"><i class="fa-solid fa-location-dot"></i></div>
@@ -219,7 +453,7 @@
                     </div>
                 </div>
 
-                <div data-aos="fade-left" class="bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                <div data-aos="fade-left" class="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                     <form id="contactForm" class="space-y-4">
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
@@ -233,7 +467,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Message</label>
-                            <textarea rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none" placeholder="Comment QuickFlow gère la sécurité ?"></textarea>
+                            <textarea rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none" placeholder="Bonjour, je suis intéressé par le plan Pro..."></textarea>
                         </div>
                         <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 transition">Envoyer le message</button>
                     </form>
@@ -244,114 +478,81 @@
     </section>
 
     <section id="signup" class="py-24 bg-slate-900 text-white text-center relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full opacity-20 bg-grid"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary-600 rounded-full blur-[100px] opacity-20"></div>
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-600 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
 
-        <div class="relative max-w-2xl mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-6">Prêt à gagner 4h par semaine ?</h2>
-            <p class="text-slate-400 mb-10 text-lg">Rejoignez la Bêta privée. Pas de carte bancaire, pas d'engagement.</p>
+        <div class="relative max-w-3xl mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Rejoignez la documentation du futur</h2>
+            <p class="text-slate-400 mb-10 text-lg">Rejoignez la Bêta privée. Les 50 premiers inscrits bénéficient de l'offre "Pro" à vie.</p>
             
-            <form id="signupForm" class="flex flex-col sm:flex-row gap-3">
-                <input type="email" placeholder="votre@email.com" required 
-                    class="flex-1 px-6 py-4 rounded-xl text-slate-900 focus:outline-none focus:ring-4 focus:ring-primary-600/50 shadow-lg placeholder:text-slate-400">
-                <button type="submit" class="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-xl font-bold transition shadow-glow flex items-center justify-center gap-2">
-                    Accès Bêta <i class="fa-solid fa-arrow-right"></i>
+            <form id="signupForm" class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <input type="email" placeholder="votre@email-pro.com" required 
+                    class="flex-1 px-6 py-4 rounded-xl text-slate-900 bg-white border-2 border-transparent focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-900 shadow-lg placeholder:text-slate-400">
+                <button type="submit" class="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-xl font-bold transition shadow-glow flex items-center justify-center gap-2 whitespace-nowrap">
+                    Accès Bêta <i class="fa-solid fa-rocket"></i>
                 </button>
             </form>
 
             <div id="signupSuccess" class="hidden mt-6 bg-green-500/10 border border-green-500/20 p-4 rounded-xl text-green-400 font-medium animate-pulse">
-                <i class="fa-solid fa-check-circle mr-2"></i> Bienvenue à bord ! Vérifiez vos emails.
+                <i class="fa-solid fa-check-circle mr-2"></i> Bienvenue à bord ! Vérifiez vos emails pour l'accès.
             </div>
+            
+            <p class="mt-6 text-xs text-slate-500">Pas de carte bancaire requise. Désabonnement à tout moment.</p>
         </div>
     </section>
 
-    <footer class="bg-slate-950 text-slate-500 py-12 border-t border-slate-900 text-sm text-center">
-        <p>© 2025 QuickFlow SAS. Made for productive teams.</p>
-    </footer>
-
-    <div id="demoModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal()"></div>
-        
-        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden transform transition-all scale-100">
-            <div class="flex justify-between items-center p-4 border-b border-slate-100">
-                <h3 class="font-bold text-lg text-slate-800">Démo QuickFlow (Bêta)</h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark text-slate-600"></i>
-                </button>
-            </div>
-            
-            <div class="aspect-video bg-slate-900 relative flex items-center justify-center group cursor-pointer">
-                <div class="absolute inset-0 opacity-50 bg-[url('https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center"></div>
-                
-                <div class="w-20 h-20 bg-primary-600/90 rounded-full flex items-center justify-center text-white text-3xl shadow-glow group-hover:scale-110 transition duration-300 z-10">
-                    <i class="fa-solid fa-play ml-1"></i>
+    <footer class="bg-slate-950 text-slate-500 py-12 border-t border-slate-800 text-sm">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-slate-800 rounded flex items-center justify-center text-primary-500 text-xs">
+                    <i class="fa-solid fa-bolt"></i>
                 </div>
-                
-                <p class="absolute bottom-6 text-white font-medium z-10">Cliquez pour lancer la visite guidée (1:20)</p>
+                <span class="text-slate-300 font-bold">QuickFlow</span>
             </div>
-            
-            <div class="p-6 bg-slate-50 text-center">
-                <p class="text-slate-600 mb-4">Vous avez aimé ce que vous avez vu ?</p>
-                <button onclick="closeModal(); scrollToSignup()" class="bg-primary-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-primary-700 transition">
-                    Commencer maintenant
-                </button>
+            <p>© 2025 QuickFlow SAS. Metz, France.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fa-brands fa-twitter"></i></a>
             </div>
         </div>
-    </div>
+    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 800, once: true });
 
-        // LOGIQUE MODAL DEMO
-        const modal = document.getElementById('demoModal');
-        function openModal() {
-            modal.classList.remove('hidden');
-            trackClick('Open_Demo_Modal');
-        }
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-        // Fermer avec la touche Echap
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") closeModal();
-        });
-
-        // SCROLL VERS SIGNUP
         function scrollToSignup() {
             document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
-            trackClick('CTA_Trial_Click');
         }
 
-        // GESTION FORMULAIRE CONTACT
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = this.querySelector('button');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Envoi...';
-            btn.disabled = true;
-            setTimeout(() => {
-                this.style.display = 'none';
-                document.getElementById('contactSuccess').classList.remove('hidden');
-                console.log("Métrique: Contact Form Submitted");
-            }, 1000);
-        });
-
-        // GESTION FORMULAIRE SIGNUP
+        // Logic Formulaire Signup
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = this.querySelector('button');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+            
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Configuration...';
             btn.disabled = true;
+            btn.classList.add('opacity-75');
+            
             setTimeout(() => {
                 this.style.display = 'none';
                 document.getElementById('signupSuccess').classList.remove('hidden');
-                console.log("Métrique: Beta Signup Converted");
-            }, 1000);
+            }, 1500);
         });
 
-        function trackClick(action) {
-            console.log(`Tracking: ${action}`);
-        }
+        // Logic Formulaire Contact
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Envoi...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                this.style.display = 'none';
+                document.getElementById('contactSuccess').classList.remove('hidden');
+            }, 1000);
+        });
     </script>
 </body>
 </html>
