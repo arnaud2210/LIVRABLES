@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickFlow - Transformez le chaos en documentation</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
-        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
         /* --- Background Tech Grid --- */
         .bg-grid {
             background-size: 50px 50px;
             background-image: linear-gradient(to right, rgba(226, 232, 240, 0.5) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+                linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
             mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
@@ -44,19 +52,44 @@
 
         /* --- Custom Animations --- */
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
-        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
 
         /* Effet de scan pour la démo */
         @keyframes scan {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
+            0% {
+                top: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
         }
+
         .scan-line {
             position: absolute;
             width: 100%;
@@ -68,20 +101,34 @@
 
         /* Pulse effect for AI connector */
         @keyframes pulse-ring {
-            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
-            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+            0% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+            }
+
+            100% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+            }
         }
-        .ai-pulse { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+        .ai-pulse {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
     </style>
-    
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563EB', 700: '#1d4ed8', 900: '#1e3a8a' },
-                        slate: { 850: '#151f32', 900: '#0f172a' } 
+                        slate: { 850: '#151f32', 900: '#0f172a' }
                     },
                     boxShadow: {
                         'glow': '0 0 30px rgba(37, 99, 235, 0.2)',
@@ -92,26 +139,32 @@
         }
     </script>
 </head>
+
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
 
     <nav class="fixed w-full z-50 transition-all duration-300 glass-panel shadow-sm top-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-cyan-500 rounded-lg flex items-center justify-center text-white shadow-lg">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-primary-600 to-cyan-500 rounded-lg flex items-center justify-center text-white shadow-lg">
                         <i class="fa-solid fa-bolt"></i>
                     </div>
                     <span class="font-bold text-xl tracking-tight text-slate-800">QuickFlow</span>
                 </div>
-                
+
                 <div class="hidden md:flex space-x-8">
-                    <a href="#probleme" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Problème</a>
-                    <a href="#demo" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Comment ça marche</a>
-                    <a href="#prix" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Tarifs</a>
+                    <a href="#probleme"
+                        class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Problème</a>
+                    <a href="#demo" class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Comment
+                        ça marche</a>
+                    <a href="#prix"
+                        class="text-sm font-medium text-slate-600 hover:text-primary-600 transition">Tarifs</a>
                 </div>
-                
+
                 <div>
-                    <button onclick="scrollToSignup()" class="bg-slate-900 hover:bg-primary-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition shadow-lg transform hover:-translate-y-0.5">
+                    <button onclick="scrollToSignup()"
+                        class="bg-slate-900 hover:bg-primary-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition shadow-lg transform hover:-translate-y-0.5">
                         Essai Gratuit
                     </button>
                 </div>
@@ -121,96 +174,127 @@
 
     <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div class="absolute inset-0 bg-grid -z-10"></div>
-        <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-primary-200/40 rounded-full blur-[100px] -z-10"></div>
+        <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-primary-200/40 rounded-full blur-[100px] -z-10">
+        </div>
         <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-200/40 rounded-full blur-[100px] -z-10"></div>
-        
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-            
-            <div data-aos="fade-down" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 shadow-sm mb-8">
+
+            <div data-aos="fade-down"
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 shadow-sm mb-8">
                 <span class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                 </span>
                 <span class="text-xs font-bold text-blue-700 uppercase tracking-wide">IA v2.0 Disponible</span>
             </div>
 
-            <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
-                La documentation qui s'écrit<br/>
+            <h1 data-aos="fade-up" data-aos-delay="100"
+                class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+                La documentation qui s'écrit<br />
                 <span class="text-gradient">toute seule.</span>
             </h1>
-            
-            <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl mx-auto text-xl text-slate-500 mb-10 leading-relaxed">
-                Ne perdez plus 4h par semaine à rédiger. QuickFlow transforme vos échanges Slack, Teams et vos notes vocales en procédures claires.
+
+            <p data-aos="fade-up" data-aos-delay="200"
+                class="mt-4 max-w-2xl mx-auto text-xl text-slate-500 mb-10 leading-relaxed">
+                Ne perdez plus 4h par semaine à rédiger. QuickFlow transforme vos échanges Slack, Teams et vos notes
+                vocales en procédures claires.
             </p>
-            
+
             <div data-aos="fade-up" data-aos-delay="300" class="flex flex-col sm:flex-row justify-center gap-4 mb-20">
-                <button onclick="scrollToSignup()" class="px-8 py-4 bg-primary-600 rounded-xl text-white font-bold text-lg shadow-glow hover:bg-primary-700 transition hover:shadow-xl flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Générer ma première doc
-                </button>
-                <button onclick="document.getElementById('demo').scrollIntoView({behavior: 'smooth'})" class="px-8 py-4 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold text-lg hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+                <a href="https://drive.google.com/uc?export=download&id=1qMTs37Wfnt67Kf5Cj5n2ouM5XO4I2Wmd"
+                    target="_blank"
+                    class="px-8 py-4 bg-primary-600 rounded-xl text-white font-bold text-lg shadow-glow hover:bg-primary-700 transition hover:shadow-xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Télécharger pour Windows
+                </a>
+                <button onclick="document.getElementById('demo').scrollIntoView({behavior: 'smooth'})"
+                    class="px-8 py-4 bg-white border border-slate-200 rounded-xl text-slate-700 font-bold text-lg hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
                     Voir la démo
                 </button>
             </div>
 
             <div data-aos="zoom-in-up" data-aos-delay="400" class="relative max-w-6xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-0 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-slate-900/5">
-                    
+                <div
+                    class="grid md:grid-cols-2 gap-0 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden ring-1 ring-slate-900/5">
+
                     <div class="bg-slate-50 p-6 md:p-10 border-r border-slate-200 relative">
-                        <div class="absolute top-4 left-6 text-xs font-bold text-slate-400 tracking-wider">SOURCE (Slack / Notes)</div>
-                        
+                        <div class="absolute top-4 left-6 text-xs font-bold text-slate-400 tracking-wider">SOURCE (Slack
+                            / Notes)</div>
+
                         <div class="mt-8 space-y-4 font-inter text-sm text-left">
                             <div class="flex gap-3">
-                                <div class="w-8 h-8 rounded bg-purple-600 flex items-center justify-center text-white text-xs font-bold">JD</div>
+                                <div
+                                    class="w-8 h-8 rounded bg-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                                    JD</div>
                                 <div class="space-y-1 w-full">
                                     <div class="flex items-baseline gap-2">
                                         <span class="font-bold text-slate-700">John Doe</span>
                                         <span class="text-xs text-slate-400">10:42 AM</span>
                                     </div>
-                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 text-slate-600 w-fit">
-                                        @Team pour déployer en prod, lancer `npm run build`, vérifier Vercel, et SURTOUT vider le cache Redis sinon ça plante 😅
+                                    <div
+                                        class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 text-slate-600 w-fit">
+                                        @Team pour déployer en prod, lancer `npm run build`, vérifier Vercel, et SURTOUT
+                                        vider le cache Redis sinon ça plante 😅
                                     </div>
                                 </div>
                             </div>
                             <div class="flex gap-3">
-                                <div class="w-8 h-8 rounded bg-pink-500 flex items-center justify-center text-white text-xs font-bold">AS</div>
+                                <div
+                                    class="w-8 h-8 rounded bg-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                                    AS</div>
                                 <div class="space-y-1 w-full">
                                     <div class="flex items-baseline gap-2">
                                         <span class="font-bold text-slate-700">Alice Smith</span>
                                         <span class="text-xs text-slate-400">10:45 AM</span>
                                     </div>
-                                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 text-slate-600 w-fit">
+                                    <div
+                                        class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 text-slate-600 w-fit">
                                         Ah oui, et aussi notifier le channel #support une fois que c'est fait.
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="hidden md:flex absolute top-1/2 -right-5 z-10 w-10 h-10 bg-primary-600 rounded-full items-center justify-center text-white shadow-lg border-4 border-white ai-pulse">
+                        <div
+                            class="hidden md:flex absolute top-1/2 -right-5 z-10 w-10 h-10 bg-primary-600 rounded-full items-center justify-center text-white shadow-lg border-4 border-white ai-pulse">
                             <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
 
                     <div class="bg-white p-6 md:p-10 relative text-left">
-                        <div class="absolute top-4 left-6 text-xs font-bold text-primary-600 tracking-wider flex items-center gap-2">
+                        <div
+                            class="absolute top-4 left-6 text-xs font-bold text-primary-600 tracking-wider flex items-center gap-2">
                             <i class="fa-solid fa-check-circle"></i> GÉNÉRÉ PAR QUICKFLOW
                         </div>
 
                         <div class="mt-8 border border-slate-100 rounded-lg p-6 shadow-sm bg-white">
-                            <div class="h-6 w-3/4 bg-slate-800 rounded mb-4"></div> <div class="space-y-4">
+                            <div class="h-6 w-3/4 bg-slate-800 rounded mb-4"></div>
+                            <div class="space-y-4">
                                 <div class="flex items-start gap-3">
-                                    <div class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs"><i class="fa-solid fa-1"></i></div>
+                                    <div
+                                        class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+                                        <i class="fa-solid fa-1"></i>
+                                    </div>
                                     <div class="flex-1">
                                         <div class="h-3 w-1/3 bg-slate-200 rounded mb-2"></div>
                                         <div class="h-2 w-full bg-slate-100 rounded"></div>
-                                        <div class="mt-2 p-2 bg-slate-50 rounded border border-slate-200 font-mono text-xs text-slate-500">npm run build</div>
+                                        <div
+                                            class="mt-2 p-2 bg-slate-50 rounded border border-slate-200 font-mono text-xs text-slate-500">
+                                            npm run build</div>
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-3">
-                                    <div class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs"><i class="fa-solid fa-2"></i></div>
+                                    <div
+                                        class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs">
+                                        <i class="fa-solid fa-2"></i>
+                                    </div>
                                     <div class="flex-1">
                                         <div class="h-3 w-1/2 bg-slate-200 rounded mb-2"></div>
-                                        <div class="p-2 bg-yellow-50 border-l-2 border-yellow-400 text-xs text-yellow-800 rounded-r">
-                                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Attention : Vider le cache Redis
+                                        <div
+                                            class="p-2 bg-yellow-50 border-l-2 border-yellow-400 text-xs text-yellow-800 rounded-r">
+                                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Attention : Vider le
+                                            cache Redis
                                         </div>
                                     </div>
                                 </div>
@@ -222,8 +306,9 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="mt-8 flex justify-center items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition duration-500">
+
+                <div
+                    class="mt-8 flex justify-center items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition duration-500">
                     <span class="text-sm font-semibold text-slate-400">S'intègre avec :</span>
                     <i class="fa-brands fa-slack text-2xl hover:text-[#4A154B]" title="Slack"></i>
                     <i class="fa-brands fa-microsoft text-2xl hover:text-[#0078D4]" title="Teams"></i>
@@ -257,38 +342,49 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="text-center mb-20">
                 <span class="text-primary-600 font-bold tracking-wider uppercase text-sm">Workflow Intelligent</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">De la note vocale au Wiki en 3 étapes</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mt-2">De la note vocale au Wiki en 3 étapes
+                </h2>
             </div>
 
             <div class="relative">
                 <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -z-10 hidden md:block"></div>
 
                 <div class="grid md:grid-cols-3 gap-12">
-                    <div data-aos="fade-right" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl relative group hover:-translate-y-2 transition duration-300">
-                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-primary-600 text-2xl mb-6 mx-auto group-hover:scale-110 transition">
+                    <div data-aos="fade-right"
+                        class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl relative group hover:-translate-y-2 transition duration-300">
+                        <div
+                            class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-primary-600 text-2xl mb-6 mx-auto group-hover:scale-110 transition">
                             <i class="fa-solid fa-microphone-lines"></i>
                         </div>
                         <h3 class="text-xl font-bold text-center mb-3">1. Capturez</h3>
-                        <p class="text-slate-500 text-center text-sm">Enregistrez une note vocale, transférez un fil Slack ou uploadez vos notes en vrac.</p>
+                        <p class="text-slate-500 text-center text-sm">Enregistrez une note vocale, transférez un fil
+                            Slack ou uploadez vos notes en vrac.</p>
                     </div>
 
-                    <div data-aos="zoom-in" class="bg-white p-6 rounded-2xl border border-primary-100 shadow-glow relative group hover:-translate-y-2 transition duration-300 z-10">
-                        <div class="absolute -top-3 -right-3 bg-gradient-to-r from-primary-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full animate-bounce">
+                    <div data-aos="zoom-in"
+                        class="bg-white p-6 rounded-2xl border border-primary-100 shadow-glow relative group hover:-translate-y-2 transition duration-300 z-10">
+                        <div
+                            class="absolute -top-3 -right-3 bg-gradient-to-r from-primary-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full animate-bounce">
                             IA ENGINE
                         </div>
-                        <div class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 mx-auto">
+                        <div
+                            class="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl mb-6 mx-auto">
                             <i class="fa-solid fa-brain"></i>
                         </div>
                         <h3 class="text-xl font-bold text-center mb-3">2. L'IA Structure</h3>
-                        <p class="text-slate-500 text-center text-sm">QuickFlow analyse, supprime le bruit, formate le contenu et applique votre charte graphique.</p>
+                        <p class="text-slate-500 text-center text-sm">QuickFlow analyse, supprime le bruit, formate le
+                            contenu et applique votre charte graphique.</p>
                     </div>
 
-                    <div data-aos="fade-left" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl relative group hover:-translate-y-2 transition duration-300">
-                        <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 text-2xl mb-6 mx-auto group-hover:scale-110 transition">
+                    <div data-aos="fade-left"
+                        class="bg-white p-6 rounded-2xl border border-slate-100 shadow-xl relative group hover:-translate-y-2 transition duration-300">
+                        <div
+                            class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 text-2xl mb-6 mx-auto group-hover:scale-110 transition">
                             <i class="fa-solid fa-share-nodes"></i>
                         </div>
                         <h3 class="text-xl font-bold text-center mb-3">3. Partagez</h3>
-                        <p class="text-slate-500 text-center text-sm">Exportez vers Notion, SharePoint, PDF ou votre intranet en un clic. Centralisation immédiate.</p>
+                        <p class="text-slate-500 text-center text-sm">Exportez vers Notion, SharePoint, PDF ou votre
+                            intranet en un clic. Centralisation immédiate.</p>
                     </div>
                 </div>
             </div>
@@ -307,11 +403,15 @@
                             <p class="text-xs text-slate-500 uppercase">DRH @ Startup 50+</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 leading-relaxed">"Avant, l'onboarding prenait 2 semaines car les processus n'étaient pas écrits. Avec QuickFlow, on a tout documenté en 3 jours."</p>
-                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-slate-600 leading-relaxed">"Avant, l'onboarding prenait 2 semaines car les processus
+                        n'étaient pas écrits. Avec QuickFlow, on a tout documenté en 3 jours."</p>
+                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                 </div>
 
-                <div class="bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition text-left relative overflow-hidden border-t-4 border-primary-500">
+                <div
+                    class="bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition text-left relative overflow-hidden border-t-4 border-primary-500">
                     <div class="flex items-center gap-4 mb-6">
                         <img src="https://i.pravatar.cc/150?img=11" alt="User" class="w-12 h-12 rounded-full">
                         <div>
@@ -319,8 +419,11 @@
                             <p class="text-xs text-slate-500 uppercase">CTO @ TechFlow</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 leading-relaxed">"C'est le seul outil qui arrive à comprendre notre jargon technique sur Slack et à en faire une doc propre pour les juniors."</p>
-                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-slate-600 leading-relaxed">"C'est le seul outil qui arrive à comprendre notre jargon
+                        technique sur Slack et à en faire une doc propre pour les juniors."</p>
+                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                 </div>
 
                 <div class="bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition text-left">
@@ -331,8 +434,11 @@
                             <p class="text-xs text-slate-500 uppercase">Responsable Qualité</p>
                         </div>
                     </div>
-                    <p class="text-slate-600 leading-relaxed">"Pour les audits ISO, c'est magique. On prouve qu'on a des processus à jour sans y passer nos nuits."</p>
-                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-slate-600 leading-relaxed">"Pour les audits ISO, c'est magique. On prouve qu'on a des
+                        processus à jour sans y passer nos nuits."</p>
+                    <div class="mt-4 text-yellow-400 text-sm"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                 </div>
             </div>
         </div>
@@ -346,15 +452,17 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
             <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Une tarification simple et transparente</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Une tarification simple et transparente
+                </h2>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
                     Commencez gratuitement. Choisissez votre plan quand votre équipe grandit.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 items-start">
-                
-                <div data-aos="fade-up" data-aos-delay="100" class="bg-white rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-xl transition duration-300">
+
+                <div data-aos="fade-up" data-aos-delay="100"
+                    class="bg-white rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-xl transition duration-300">
                     <div class="mb-4">
                         <h3 class="text-lg font-bold text-slate-900">Basic</h3>
                         <p class="text-sm text-slate-500 mt-1">Pour les petites équipes (PME).</p>
@@ -364,23 +472,32 @@
                         <span class="text-slate-500">/mois</span>
                     </div>
                     <p class="text-xs text-slate-400 mb-6 font-mono">Jusqu'à 20 utilisateurs</p>
-                    
-                    <button onclick="scrollToSignup()" class="w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:border-slate-900 hover:text-slate-900 transition mb-8">
+
+                    <button onclick="scrollToSignup()"
+                        class="w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:border-slate-900 hover:text-slate-900 transition mb-8">
                         Démarrer l'essai
                     </button>
 
                     <ul class="space-y-4 text-sm text-slate-600">
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i> <span>Génération IA illimitée</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i> <span>Export PDF & Markdown</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i> <span>Support email standard</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>
+                            <span>Génération IA illimitée</span>
+                        </li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>
+                            <span>Export PDF & Markdown</span>
+                        </li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-green-500 mt-1"></i>
+                            <span>Support email standard</span>
+                        </li>
                     </ul>
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="200" class="bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-2xl relative transform md:-translate-y-4 ring-4 ring-primary-500/20">
-                    <div class="absolute top-0 right-0 bg-gradient-to-r from-primary-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">
+                <div data-aos="fade-up" data-aos-delay="200"
+                    class="bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-2xl relative transform md:-translate-y-4 ring-4 ring-primary-500/20">
+                    <div
+                        class="absolute top-0 right-0 bg-gradient-to-r from-primary-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl">
                         POPULAIRE
                     </div>
-                    
+
                     <div class="mb-4">
                         <h3 class="text-lg font-bold text-white">Pro</h3>
                         <p class="text-sm text-slate-400 mt-1">Pour les ETI en structuration.</p>
@@ -390,20 +507,29 @@
                         <span class="text-slate-400">/mois</span>
                     </div>
                     <p class="text-xs text-primary-200 mb-6 font-mono">Jusqu'à 100 utilisateurs</p>
-                    
-                    <button onclick="scrollToSignup()" class="w-full py-4 rounded-xl bg-primary-600 text-white font-bold hover:bg-primary-500 shadow-glow transition mb-8">
+
+                    <button onclick="scrollToSignup()"
+                        class="w-full py-4 rounded-xl bg-primary-600 text-white font-bold hover:bg-primary-500 shadow-glow transition mb-8">
                         Choisir le plan Pro
                     </button>
 
                     <ul class="space-y-4 text-sm text-slate-300">
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span class="font-semibold text-white">Tout du plan Basic</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span>Intégrations Slack/Notion</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span>Templates personnalisés</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span>Support prioritaire</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i> <span
+                                class="font-semibold text-white">Tout du plan Basic</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i>
+                            <span>Intégrations Slack/Notion</span>
+                        </li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i>
+                            <span>Templates personnalisés</span>
+                        </li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-primary-400 mt-1"></i>
+                            <span>Support prioritaire</span>
+                        </li>
                     </ul>
                 </div>
 
-                <div data-aos="fade-up" data-aos-delay="300" class="bg-white rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-xl transition duration-300">
+                <div data-aos="fade-up" data-aos-delay="300"
+                    class="bg-white rounded-2xl p-8 border border-slate-200 shadow-card hover:shadow-xl transition duration-300">
                     <div class="mb-4">
                         <h3 class="text-lg font-bold text-slate-900">Enterprise</h3>
                         <p class="text-sm text-slate-500 mt-1">Grands comptes & sécurité.</p>
@@ -413,16 +539,24 @@
                         <span class="text-slate-500">/mois</span>
                     </div>
                     <p class="text-xs text-slate-400 mb-6 font-mono">Jusqu'à 200 users (+2€/user sup.)</p>
-                    
-                    <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" class="w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition mb-8">
+
+                    <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})"
+                        class="w-full py-3 rounded-xl border-2 border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition mb-8">
                         Contacter les ventes
                     </button>
 
                     <ul class="space-y-4 text-sm text-slate-600">
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span class="font-semibold text-slate-900">Tout du plan Pro</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span>Sécurité avancée (SSO)</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span>CSM Dédié</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span>Option On-premise</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i> <span
+                                class="font-semibold text-slate-900">Tout du plan Pro</span></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i>
+                            <span>Sécurité avancée (SSO)</span>
+                        </li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i>
+                            <span>CSM Dédié</span>
+                        </li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check text-slate-900 mt-1"></i>
+                            <span>Option On-premise</span>
+                        </li>
                     </ul>
                 </div>
 
@@ -435,20 +569,39 @@
             <div class="grid lg:grid-cols-2 gap-16">
                 <div data-aos="fade-right">
                     <h2 class="text-3xl font-bold text-slate-900 mb-6">Une question sur l'intégration ?</h2>
-                    <p class="text-lg text-slate-600 mb-8">Nos experts vous répondent sous 2 heures. Idéal pour les demandes Enterprise ou les partenariats.</p>
-                    
+                    <p class="text-lg text-slate-600 mb-8">Nos experts vous répondent sous 2 heures. Idéal pour les
+                        demandes Enterprise ou les partenariats.</p>
+
                     <div class="space-y-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600"><i class="fa-solid fa-envelope"></i></div>
-                            <div><p class="font-bold">Email</p><p class="text-slate-500">contact@quickflow.com </p></div>
+                            <div
+                                class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold">Email</p>
+                                <p class="text-slate-500">contact@quickflow.com </p>
+                            </div>
                         </div>
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600"><i class="fa-solid fa-phone"></i></div>
-                            <div><p class="font-bold">Téléphone</p><p class="text-slate-500">+33 7 80 04 02 62 </p></div>
+                            <div
+                                class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold">Téléphone</p>
+                                <p class="text-slate-500">+33 7 80 04 02 62 </p>
+                            </div>
                         </div>
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600"><i class="fa-solid fa-location-dot"></i></div>
-                            <div><p class="font-bold">Bureau</p><p class="text-slate-500">Metz, France</p></div>
+                            <div
+                                class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold">Bureau</p>
+                                <p class="text-slate-500">Metz, France</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -458,45 +611,61 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Nom</label>
-                                <input type="text" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none" placeholder="Votre nom">
+                                <input type="text"
+                                    class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none"
+                                    placeholder="Votre nom">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                                <input type="email" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none" placeholder="votre@email.com">
+                                <input type="email"
+                                    class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none"
+                                    placeholder="votre@email.com">
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Message</label>
-                            <textarea rows="4" class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none" placeholder="Bonjour, je suis intéressé par le plan Pro..."></textarea>
+                            <textarea rows="4"
+                                class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary-500 outline-none"
+                                placeholder="Bonjour, je suis intéressé par le plan Pro..."></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 transition">Envoyer le message</button>
+                        <button type="submit"
+                            class="w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800 transition">Envoyer
+                            le message</button>
                     </form>
-                    <div id="contactSuccess" class="hidden mt-4 text-green-600 font-bold text-center"><i class="fa-solid fa-check mr-2"></i> Message envoyé !</div>
+                    <div id="contactSuccess" class="hidden mt-4 text-green-600 font-bold text-center"><i
+                            class="fa-solid fa-check mr-2"></i> Message envoyé !</div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="signup" class="py-24 bg-slate-900 text-white text-center relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-600 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+        <div
+            class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-600 rounded-full blur-[120px] opacity-20 pointer-events-none">
+        </div>
 
         <div class="relative max-w-3xl mx-auto px-4">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">Rejoignez la documentation du futur</h2>
-            <p class="text-slate-400 mb-10 text-lg">Rejoignez la Bêta privée. Les 50 premiers inscrits bénéficient de l'offre "Pro" à vie.</p>
-            
+            <p class="text-slate-400 mb-10 text-lg">Rejoignez la Bêta privée. Les 50 premiers inscrits bénéficient de
+                l'offre "Pro" à vie.</p>
+
             <form id="signupForm" class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-                <input type="email" placeholder="votre@email-pro.com" required 
+                <input type="email" placeholder="votre@email-pro.com" required
                     class="flex-1 px-6 py-4 rounded-xl text-slate-900 bg-white border-2 border-transparent focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-900 shadow-lg placeholder:text-slate-400">
-                <button type="submit" class="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-xl font-bold transition shadow-glow flex items-center justify-center gap-2 whitespace-nowrap">
+                <button type="submit"
+                    class="bg-primary-600 hover:bg-primary-500 text-white px-8 py-4 rounded-xl font-bold transition shadow-glow flex items-center justify-center gap-2 whitespace-nowrap">
                     Accès Bêta <i class="fa-solid fa-rocket"></i>
                 </button>
             </form>
 
-            <div id="signupSuccess" class="hidden mt-6 bg-green-500/10 border border-green-500/20 p-4 rounded-xl text-green-400 font-medium animate-pulse">
+            <div id="signupSuccess"
+                class="hidden mt-6 bg-green-500/10 border border-green-500/20 p-4 rounded-xl text-green-400 font-medium animate-pulse">
                 <i class="fa-solid fa-check-circle mr-2"></i> Bienvenue à bord ! Vérifiez vos emails pour l'accès.
             </div>
-            
+
             <p class="mt-6 text-xs text-slate-500">Pas de carte bancaire requise. Désabonnement à tout moment.</p>
         </div>
     </section>
@@ -526,14 +695,14 @@
         }
 
         // Logic Formulaire Signup
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const btn = this.querySelector('button');
-            
+
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Configuration...';
             btn.disabled = true;
             btn.classList.add('opacity-75');
-            
+
             setTimeout(() => {
                 this.style.display = 'none';
                 document.getElementById('signupSuccess').classList.remove('hidden');
@@ -541,13 +710,13 @@
         });
 
         // Logic Formulaire Contact
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const btn = this.querySelector('button');
-            
+
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Envoi...';
             btn.disabled = true;
-            
+
             setTimeout(() => {
                 this.style.display = 'none';
                 document.getElementById('contactSuccess').classList.remove('hidden');
@@ -555,4 +724,5 @@
         });
     </script>
 </body>
+
 </html>

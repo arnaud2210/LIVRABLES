@@ -1,0 +1,47 @@
+{
+  "name": "quickflow-app",
+  "version": "1.0.0",
+  "description": "Générateur automatique de procédures documentées à partir d'enregistrements d'écran",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win",
+    "build:dir": "electron-builder --win --dir"
+  },
+  "keywords": [
+    "documentation",
+    "procedure",
+    "ai",
+    "screen-recording"
+  ],
+  "author": "QuickFlow",
+  "license": "MIT",
+  "build": {
+    "appId": "com.quickflow.app",
+    "productName": "QuickFlow",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**"
+    ],
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "artifactName": "QuickFlow-${version}.exe"
+    }
+  },
+  "devDependencies": {
+    "@electron/packager": "^19.0.1",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "openai": "^4.24.0"
+  }
+}

@@ -1,0 +1,28 @@
+# Dépendances
+node_modules/
+.npm
+
+# Build outputs
+quickflow-app/dist/
+*.exe
+*.zip
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Config locale
+quickflow-app/config.json
+
+# Cache
+.cache/
