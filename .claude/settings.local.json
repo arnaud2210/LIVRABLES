@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm start)",
+      "Bash(timeout:*)",
+      "Bash(findstr:*)",
+      "Bash(npm search:*)",
+      "Bash(npm install)",
+      "Bash(npm show:*)",
+      "Bash(node -e:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

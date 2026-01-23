@@ -3,215 +3,941 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.openai.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob:; connect-src 'self' https://api.openai.com">
     <title>QuickFlow - Générateur de Procédures</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563EB', 700: '#1d4ed8' },
-                        dark: { 800: '#1e293b', 900: '#0f172a', 950: '#020617' }
+                        primary: {
+                            300: '#6DD3F5',
+                            400: '#50E6FF',
+                            500: '#0078D4',
+                            600: '#0063B1',
+                            700: '#004E8C'
+                        },
+                        accent: {
+                            cyan: '#00BCF2',
+                            teal: '#008272',
+                            green: '#7FBA00',
+                            purple: '#8661C5'
+                        },
+                        azure: {
+                            light: '#50E6FF',
+                            primary: '#0078D4',
+                            dark: '#002050',
+                            gradient: '#0063B1'
+                        },
+                        dark: {
+                            700: '#1B3A5A',
+                            800: '#0F2847',
+                            900: '#0A1929',
+                            950: '#050E18'
+                        }
                     }
                 }
             }
         }
     </script>
-    
+
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        
-        /* Recording pulse animation */
-        @keyframes pulse-record {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f0f6ff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --sidebar-bg: rgba(255, 255, 255, 0.8);
         }
-        .recording-pulse { animation: pulse-record 1.5s ease-in-out infinite; }
-        
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+
+        body.dark {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --card-bg: rgba(30, 41, 59, 0.9);
+            --sidebar-bg: rgba(15, 23, 42, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 50%, var(--bg-secondary) 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f0f0f0; }
+        ::-webkit-scrollbar-thumb { background: #0078D4; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #106ebe; }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 120, 212, 0.15);
+            box-shadow: 0 4px 24px rgba(0, 120, 212, 0.08);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #0078D4 0%, #00BCF2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 120, 212, 0.2);
+        }
+
+        .btn-press:active {
+            transform: scale(0.97);
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        
-        /* Step card hover */
-        .step-card { transition: all 0.2s ease; }
-        .step-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3); }
+        .animate-fadeSlideIn {
+            animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slideDown {
+            animation: slideDown 0.2s ease-out forwards;
+        }
+
+        @keyframes recording-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .recording-pulse {
+            animation: recording-pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes spin-gradient {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-gradient {
+            animation: spin-gradient 1s linear infinite;
+        }
+
+        .step-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .step-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px -10px rgba(0, 120, 212, 0.15);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            transition: all 0.3s ease;
+        }
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+        .sidebar-item:hover {
+            background: rgba(0, 120, 212, 0.08);
+        }
+        .sidebar-item.active {
+            background: rgba(0, 120, 212, 0.12);
+            border-right: 3px solid #0078D4;
+        }
+
+        /* Annotation Tools */
+        .annotation-tool {
+            transition: all 0.2s ease;
+        }
+        .annotation-tool.active {
+            background: #0078D4;
+            box-shadow: 0 0 12px rgba(0, 120, 212, 0.5);
+        }
+        .color-btn.active {
+            ring: 2px;
+            ring-color: #50E6FF;
+            transform: scale(1.1);
+        }
+
+        /* Department tags */
+        .dept-tag {
+            transition: all 0.2s ease;
+        }
+        .dept-tag:hover {
+            transform: scale(1.02);
+        }
+        .dept-tag.selected {
+            ring: 2px;
+            ring-color: #0078D4;
+        }
+
+        /* Toast animations */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideOutRight {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100px); }
+        }
+        .animate-slideIn {
+            animation: slideInRight 0.3s ease-out forwards;
+        }
+        .animate-slideOut {
+            animation: slideOutRight 0.3s ease-out forwards;
+        }
+
+        /* Dark mode transitions */
+        body, .sidebar, .glass, main, .step-card {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Dark mode specific styles */
+        body.dark .sidebar {
+            background: var(--sidebar-bg);
+            border-color: var(--border-color);
+        }
+        body.dark .bg-white {
+            background-color: var(--bg-secondary) !important;
+        }
+        body.dark .text-gray-800 {
+            color: var(--text-primary) !important;
+        }
+        body.dark .text-gray-600, body.dark .text-gray-700 {
+            color: var(--text-secondary) !important;
+        }
+        body.dark .text-gray-500, body.dark .text-gray-400 {
+            color: var(--text-muted) !important;
+        }
+        body.dark .border-gray-100, body.dark .border-gray-200 {
+            border-color: var(--border-color) !important;
+        }
+        body.dark .bg-gray-50, body.dark .bg-gray-100 {
+            background-color: var(--bg-tertiary) !important;
+        }
+
+        /* Drag and drop */
+        .step-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.98);
+        }
+        .step-card.drag-over {
+            border: 2px dashed #0078D4;
+            background: rgba(0, 120, 212, 0.05);
+        }
+        .drag-handle {
+            cursor: grab;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
     </style>
 </head>
-<body class="bg-dark-950 text-white min-h-screen">
-    
-    <!-- Header -->
-    <header class="bg-dark-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-cyan-500 rounded-lg flex items-center justify-center text-white shadow-lg">
-                <i class="fa-solid fa-bolt"></i>
+<body class="min-h-screen text-gray-800">
+
+    <!-- Background decoration -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-gradient-to-br from-azure-primary/20 to-accent-cyan/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-20 w-[400px] h-[400px] bg-gradient-to-bl from-accent-cyan/15 to-azure-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 left-1/3 w-[350px] h-[350px] bg-gradient-to-tr from-azure-primary/10 to-transparent rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="flex min-h-screen relative z-10">
+
+        <!-- Sidebar -->
+        <aside class="sidebar bg-white/80 backdrop-blur-md border-r border-gray-200 flex flex-col fixed left-0 top-0 h-full z-30">
+            <!-- Logo -->
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-azure-primary to-accent-cyan rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-smooth"></div>
+                        <img src="../assets/Logo.png" alt="QuickFlow Logo" class="relative w-10 h-10 rounded-xl object-contain shadow-lg">
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg gradient-text">QuickFlow</h1>
+                        <p class="text-xs text-gray-500">v2.0</p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h1 class="font-bold text-lg">QuickFlow</h1>
-                <p class="text-xs text-slate-500">Générateur de Procédures</p>
+
+            <!-- Navigation -->
+            <nav class="flex-1 py-4">
+                <div class="px-4 mb-2">
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Menu</span>
+                </div>
+
+                <button id="navDashboard" class="sidebar-item active w-full px-6 py-3 flex items-center gap-3 text-left text-gray-700">
+                    <i class="fa-solid fa-house text-azure-primary w-5"></i>
+                    <span class="font-medium">Tableau de bord</span>
+                </button>
+
+                <button id="navNewProcedure" class="sidebar-item w-full px-6 py-3 flex items-center gap-3 text-left text-gray-700">
+                    <i class="fa-solid fa-plus text-accent-cyan w-5"></i>
+                    <span class="font-medium">Nouvelle procédure</span>
+                </button>
+
+                <button id="navMyProcedures" class="sidebar-item w-full px-6 py-3 flex items-center gap-3 text-left text-gray-700">
+                    <i class="fa-solid fa-folder text-amber-500 w-5"></i>
+                    <span class="font-medium">Mes procédures</span>
+                    <span class="ml-auto bg-azure-primary/10 text-azure-primary text-xs font-semibold px-2 py-0.5 rounded-full" id="procedureCount">0</span>
+                </button>
+
+                <button id="navSharedWithMe" class="sidebar-item w-full px-6 py-3 flex items-center gap-3 text-left text-gray-700">
+                    <i class="fa-solid fa-share-nodes text-purple-500 w-5"></i>
+                    <span class="font-medium">Partagées avec moi</span>
+                </button>
+
+                <div class="px-4 mt-6 mb-2">
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Départements</span>
+                </div>
+
+                <div id="departmentsList" class="px-4 space-y-1">
+                    <!-- Départements dynamiques -->
+                </div>
+            </nav>
+
+            <!-- User Department Badge -->
+            <div class="px-4 py-3 border-t border-gray-100">
+                <div id="userDepartmentBadge" class="flex items-center gap-3 px-4 py-3 bg-azure-primary/10 rounded-xl">
+                    <div class="w-8 h-8 rounded-lg bg-azure-primary/20 flex items-center justify-center">
+                        <i class="fa-solid fa-user text-azure-primary text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-gray-500">Mon département</p>
+                        <p id="userDepartmentName" class="text-sm font-semibold text-azure-primary truncate">Non défini</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        <button id="settingsBtn" class="p-2 rounded-lg hover:bg-slate-800 transition text-slate-400 hover:text-white">
-            <i class="fa-solid fa-gear"></i>
-        </button>
-    </header>
-    
-    <!-- Main Content -->
-    <main class="p-6">
-        
-        <!-- État initial : Sélection de la source -->
-        <div id="sourceSelection" class="max-w-4xl mx-auto">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold mb-2">Nouvelle Procédure</h2>
-                <p class="text-slate-400">Sélectionnez l'écran ou la fenêtre à capturer</p>
-            </div>
-            
-            <div id="sourcesList" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                <!-- Sources dynamiques -->
-            </div>
-            
-            <div class="flex justify-center">
-                <button id="refreshSourcesBtn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm transition flex items-center gap-2">
-                    <i class="fa-solid fa-rotate"></i> Actualiser les sources
+
+            <!-- Bottom section -->
+            <div class="p-4 border-t border-gray-100 space-y-2">
+                <button id="darkModeBtn" class="w-full px-4 py-3 flex items-center gap-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-smooth">
+                    <i id="darkModeIcon" class="fa-solid fa-moon w-5"></i>
+                    <span class="font-medium" id="darkModeText">Mode sombre</span>
+                </button>
+                <button id="settingsBtn" class="w-full px-4 py-3 flex items-center gap-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-smooth">
+                    <i class="fa-solid fa-gear w-5"></i>
+                    <span class="font-medium">Paramètres</span>
                 </button>
             </div>
-        </div>
-        
-        <!-- État : Enregistrement en cours -->
-        <div id="recordingView" class="hidden max-w-4xl mx-auto">
-            <div class="bg-dark-900 rounded-2xl border border-slate-800 p-8 text-center">
-                <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-full mb-6 recording-pulse">
-                    <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                    <span class="text-red-400 font-semibold text-sm">Enregistrement en cours</span>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-[280px] p-8">
+
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="max-w-6xl mx-auto animate-fadeSlideIn">
+                <!-- Welcome header -->
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Bienvenue sur QuickFlow</h2>
+                    <p class="text-gray-600">Créez et partagez des procédures documentées en quelques clics</p>
                 </div>
-                
-                <h2 class="text-2xl font-bold mb-4">Effectuez votre manipulation</h2>
-                <p class="text-slate-400 mb-8 max-w-md mx-auto">
-                    Cliquez sur les éléments importants. Chaque clic sera capturé comme une étape de la procédure.
-                </p>
-                
-                <div class="flex items-center justify-center gap-4 mb-8">
-                    <div class="bg-slate-800 rounded-xl px-6 py-4">
-                        <div id="stepCount" class="text-3xl font-bold text-primary-500">0</div>
-                        <div class="text-xs text-slate-500 uppercase">Étapes</div>
+
+                <!-- Search bar -->
+                <div class="mb-8">
+                    <div class="relative">
+                        <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="searchInput"
+                               placeholder="Rechercher une procédure..."
+                               class="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-azure-primary/30 focus:border-azure-primary transition-smooth text-gray-800 placeholder-gray-400 shadow-sm">
+                        <div id="searchClear" class="hidden absolute right-4 top-1/2 -translate-y-1/2">
+                            <button class="p-1 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="bg-slate-800 rounded-xl px-6 py-4">
-                        <div id="recordingTime" class="text-3xl font-bold text-cyan-400">00:00</div>
-                        <div class="text-xs text-slate-500 uppercase">Durée</div>
+                    <div id="searchResults" class="hidden mt-2 text-sm text-gray-500">
+                        <span id="searchResultCount">0</span> résultat(s) trouvé(s)
                     </div>
                 </div>
-                
+
+                <!-- Quick stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-azure-primary/10 flex items-center justify-center">
+                                <i class="fa-solid fa-file-lines text-azure-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800" id="statTotalProcedures">0</p>
+                                <p class="text-sm text-gray-500">Procédures créées</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                                <i class="fa-solid fa-share text-purple-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800" id="statShared">0</p>
+                                <p class="text-sm text-gray-500">Partagées</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                                <i class="fa-solid fa-users text-green-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800" id="statDepartments">5</p>
+                                <p class="text-sm text-gray-500">Départements</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
+                                <i class="fa-solid fa-clock text-amber-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-800" id="statThisWeek">0</p>
+                                <p class="text-sm text-gray-500">Cette semaine</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick action -->
+                <div class="bg-gradient-to-r from-azure-primary to-accent-cyan rounded-2xl p-8 mb-8 text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Créer une nouvelle procédure</h3>
+                            <p class="text-white/80">Capturez votre écran et documentez vos processus en quelques minutes</p>
+                        </div>
+                        <button id="quickNewProcedure" class="px-6 py-3 bg-white text-azure-primary font-semibold rounded-xl hover:shadow-lg transition-smooth btn-press flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Commencer</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent procedures -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">Procédures récentes</h3>
+                        <button class="text-azure-primary text-sm font-medium hover:underline">Voir tout</button>
+                    </div>
+                    <div id="recentProceduresList" class="space-y-3">
+                        <!-- Procédures récentes dynamiques -->
+                        <div class="text-center py-12 text-gray-400">
+                            <i class="fa-solid fa-folder-open text-4xl mb-3 opacity-50"></i>
+                            <p>Aucune procédure pour le moment</p>
+                            <p class="text-sm mt-1">Créez votre première procédure pour commencer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Source Selection View -->
+            <div id="sourceSelection" class="hidden max-w-5xl mx-auto animate-fadeSlideIn">
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-azure-primary/10 rounded-full mb-4">
+                        <span class="w-2 h-2 bg-azure-primary rounded-full animate-pulse"></span>
+                        <span class="text-sm text-azure-primary font-medium">Étape 1/3 - Sélection</span>
+                    </div>
+                    <h2 class="text-3xl font-bold gradient-text mb-3">Choisissez votre source</h2>
+                    <p class="text-gray-600 max-w-md mx-auto">Sélectionnez l'écran ou la fenêtre que vous souhaitez documenter</p>
+                </div>
+
+                <div id="sourcesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+                    <!-- Sources dynamiques -->
+                </div>
+
                 <div class="flex justify-center gap-4">
-                    <button id="captureStepBtn" class="px-6 py-3 bg-primary-600 hover:bg-primary-500 rounded-xl font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-camera"></i> Capturer une étape
+                    <button id="backToDashboard" class="px-5 py-2.5 text-gray-500 hover:text-azure-primary transition-smooth flex items-center gap-2 hover:bg-azure-primary/5 rounded-xl">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Retour</span>
                     </button>
-                    <button id="stopRecordingBtn" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-stop"></i> Terminer
+                    <button id="refreshSourcesBtn" class="px-5 py-2.5 bg-white border border-gray-200 hover:border-azure-primary hover:bg-azure-primary/5 rounded-xl text-sm font-medium transition-smooth flex items-center gap-2 btn-press text-gray-700 hover:text-azure-primary shadow-sm">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Actualiser</span>
                     </button>
                 </div>
             </div>
-        </div>
-        
-        <!-- État : Prévisualisation et édition -->
-        <div id="previewView" class="hidden max-w-5xl mx-auto">
+
+            <!-- Recording View -->
+            <div id="recordingView" class="hidden max-w-4xl mx-auto">
+                <div class="bg-white rounded-3xl p-10 text-center animate-fadeSlideIn shadow-xl border border-gray-100">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-azure-primary/10 rounded-full mb-4">
+                        <span class="text-sm text-azure-primary font-medium">Étape 2/3 - Capture</span>
+                    </div>
+
+                    <div class="inline-flex items-center gap-3 px-5 py-2.5 bg-red-50 border border-red-200 rounded-full mb-4">
+                        <span class="w-3 h-3 bg-red-500 rounded-full recording-pulse"></span>
+                        <span class="text-red-600 font-semibold">Enregistrement en cours</span>
+                    </div>
+
+                    <!-- Auto-capture indicator -->
+                    <div id="autoCaptureIndicator" class="inline-flex items-center gap-3 px-5 py-2.5 bg-green-50 border border-green-200 rounded-full mb-8">
+                        <i class="fa-solid fa-magic-wand-sparkles text-green-600"></i>
+                        <span class="text-green-700 font-medium">Capture automatique active</span>
+                        <span id="autoCaptureStatus" class="text-green-600 text-sm">(cliquez sur l'écran surveillé)</span>
+                    </div>
+
+                    <h2 class="text-3xl font-bold gradient-text mb-4">Effectuez votre manipulation</h2>
+                    <p class="text-gray-600 mb-6 max-w-lg mx-auto text-lg">
+                        Chaque clic sur l'écran surveillé capture automatiquement une étape
+                    </p>
+
+                    <!-- Tips -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8 max-w-md mx-auto text-left">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+                            <div class="text-sm text-amber-800">
+                                <p class="font-medium mb-1">Conseils :</p>
+                                <ul class="list-disc list-inside space-y-1 text-amber-700">
+                                    <li>Les clics sur QuickFlow sont ignorés</li>
+                                    <li>800ms minimum entre chaque capture</li>
+                                    <li>Utilisez "Pause" pour suspendre temporairement</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-6 mb-10">
+                        <div class="bg-gradient-to-br from-azure-primary/5 to-azure-primary/10 border border-azure-primary/20 rounded-2xl px-8 py-5 min-w-[140px]">
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <i class="fa-solid fa-layer-group text-azure-primary"></i>
+                            </div>
+                            <div id="stepCount" class="text-4xl font-bold text-azure-primary">0</div>
+                            <div class="text-xs text-gray-500 uppercase tracking-wider mt-1">Étapes</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-accent-cyan/5 to-accent-cyan/10 border border-accent-cyan/20 rounded-2xl px-8 py-5 min-w-[140px]">
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <i class="fa-solid fa-clock text-accent-cyan"></i>
+                            </div>
+                            <div id="recordingTime" class="text-4xl font-bold text-accent-cyan">00:00</div>
+                            <div class="text-xs text-gray-500 uppercase tracking-wider mt-1">Durée</div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center gap-4">
+                        <button id="pauseCaptureBtn" class="px-6 py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-semibold transition-smooth flex items-center gap-3 btn-press text-lg">
+                            <i class="fa-solid fa-pause" id="pauseIcon"></i>
+                            <span id="pauseText">Pause</span>
+                        </button>
+                        <button id="captureStepBtn" class="px-6 py-4 bg-gradient-to-r from-azure-primary to-accent-cyan hover:shadow-lg hover:shadow-azure-primary/25 text-white rounded-xl font-semibold transition-smooth flex items-center gap-3 btn-press text-lg">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Capture manuelle</span>
+                        </button>
+                        <button id="stopRecordingBtn" class="px-8 py-4 bg-white border-2 border-gray-200 hover:border-red-500 hover:text-red-500 rounded-xl font-semibold transition-smooth flex items-center gap-3 btn-press text-lg text-gray-700">
+                            <i class="fa-solid fa-stop"></i>
+                            <span>Terminer</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview View -->
+            <div id="previewView" class="hidden max-w-6xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 animate-fadeSlideIn">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-4 py-2 bg-azure-primary/10 rounded-full mb-3">
+                            <span class="text-sm text-azure-primary font-medium">Étape 3/3 - Finalisation</span>
+                        </div>
+                        <h2 class="text-3xl font-bold gradient-text mb-2">Prévisualisation</h2>
+                        <p class="text-gray-600">Vérifiez et personnalisez avant l'export</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="analyzeBtn" class="px-5 py-3 bg-gradient-to-r from-purple-500 to-azure-primary hover:shadow-lg hover:shadow-purple-500/25 text-white rounded-xl font-semibold transition-smooth flex items-center gap-2 btn-press">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Analyser IA</span>
+                        </button>
+
+                        <div class="relative" id="exportDropdown">
+                            <button id="exportBtn" class="px-5 py-3 bg-gradient-to-r from-azure-primary to-accent-cyan hover:shadow-lg hover:shadow-azure-primary/25 text-white rounded-xl font-semibold transition-smooth flex items-center gap-2 btn-press">
+                                <i class="fa-solid fa-download"></i>
+                                <span>Exporter</span>
+                                <i class="fa-solid fa-chevron-down ml-1 text-xs opacity-70"></i>
+                            </button>
+                            <div id="exportMenu" class="hidden absolute right-0 mt-3 w-52 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden animate-slideDown">
+                                <div class="p-2">
+                                    <button id="exportPdf" class="w-full px-4 py-3 text-left hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-smooth group text-gray-700">
+                                        <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                                            <i class="fa-solid fa-file-pdf text-red-500"></i>
+                                        </div>
+                                        <span>PDF</span>
+                                    </button>
+                                    <button id="exportHtml" class="w-full px-4 py-3 text-left hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-smooth group text-gray-700">
+                                        <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                                            <i class="fa-solid fa-code text-orange-500"></i>
+                                        </div>
+                                        <span>HTML</span>
+                                    </button>
+                                    <button id="exportMarkdown" class="w-full px-4 py-3 text-left hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-smooth group text-gray-700">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                            <i class="fa-brands fa-markdown text-blue-500"></i>
+                                        </div>
+                                        <span>Markdown</span>
+                                    </button>
+                                    <button id="exportGif" class="w-full px-4 py-3 text-left hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-smooth group text-gray-700">
+                                        <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                            <i class="fa-solid fa-film text-purple-500"></i>
+                                        </div>
+                                        <span>GIF Animé</span>
+                                    </button>
+                                    <div class="border-t border-gray-100 my-2"></div>
+                                    <button id="shareBtn" class="w-full px-4 py-3 text-left hover:bg-azure-primary/5 rounded-lg flex items-center gap-3 transition-smooth group text-azure-primary">
+                                        <div class="w-8 h-8 rounded-lg bg-azure-primary/10 flex items-center justify-center">
+                                            <i class="fa-solid fa-share-nodes text-azure-primary"></i>
+                                        </div>
+                                        <span class="font-medium">Partager...</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 mb-8 shadow-md border border-gray-100">
+                    <label class="block text-xs text-gray-500 uppercase tracking-wider mb-3 font-medium">
+                        <i class="fa-solid fa-heading mr-2 text-azure-primary"></i>Titre de la procédure
+                    </label>
+                    <input type="text" id="procedureTitle"
+                           placeholder="Ex: Comment configurer un VPN d'entreprise"
+                           class="w-full bg-transparent text-2xl font-bold focus:outline-none placeholder-gray-400 border-b-2 border-gray-200 focus:border-azure-primary transition-smooth pb-2 text-gray-800">
+                </div>
+
+                <div id="stepsList" class="space-y-5">
+                    <!-- Étapes dynamiques -->
+                </div>
+
+                <div class="flex justify-between mt-10">
+                    <button id="newRecordingBtn" class="px-5 py-2.5 text-gray-500 hover:text-azure-primary transition-smooth flex items-center gap-2 hover:bg-azure-primary/5 rounded-xl">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Nouvelle capture</span>
+                    </button>
+                    <button id="saveProcedureBtn" class="px-6 py-3 bg-accent-green text-white font-semibold rounded-xl hover:shadow-lg transition-smooth btn-press flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Sauvegarder</span>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg p-8 animate-fadeSlideIn shadow-2xl">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold">Prévisualisation</h2>
-                    <p class="text-slate-400 text-sm">Vérifiez et modifiez les étapes avant la génération</p>
+                    <h3 class="text-2xl font-bold gradient-text">Partager la procédure</h3>
+                    <p class="text-sm text-gray-500 mt-1">Sélectionnez les départements</p>
                 </div>
-                <div class="flex gap-3">
-                    <button id="analyzeBtn" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 rounded-xl font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Analyser avec l'IA
-                    </button>
-                    <button id="generatePdfBtn" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-500 rounded-xl font-semibold transition flex items-center gap-2">
-                        <i class="fa-solid fa-file-pdf"></i> Générer le PDF
-                    </button>
+                <button id="closeShareModal" class="p-2.5 hover:bg-gray-100 rounded-xl transition-smooth text-gray-500">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Départements</label>
+                <div id="shareDepartments" class="grid grid-cols-2 gap-3">
+                    <!-- Départements générés dynamiquement -->
                 </div>
             </div>
-            
-            <!-- Titre de la procédure -->
-            <div class="bg-dark-900 rounded-xl border border-slate-800 p-4 mb-6">
-                <label class="block text-xs text-slate-500 uppercase mb-2">Titre de la procédure</label>
-                <input type="text" id="procedureTitle" placeholder="Ex: Comment créer un utilisateur dans Active Directory" 
-                       class="w-full bg-transparent text-xl font-bold focus:outline-none placeholder-slate-600">
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Message (optionnel)</label>
+                <textarea id="shareMessage" placeholder="Ajoutez un message pour les destinataires..."
+                          class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-azure-primary/30 focus:border-azure-primary transition-smooth resize-none"
+                          rows="3"></textarea>
             </div>
-            
-            <!-- Liste des étapes -->
-            <div id="stepsList" class="space-y-4">
-                <!-- Étapes dynamiques -->
-            </div>
-            
-            <!-- Actions -->
-            <div class="flex justify-between mt-8">
-                <button id="newRecordingBtn" class="px-4 py-2 text-slate-400 hover:text-white transition flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Nouvelle capture
+
+            <div class="flex gap-3">
+                <button id="cancelShare" class="flex-1 px-5 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-smooth btn-press">
+                    Annuler
+                </button>
+                <button id="confirmShare" class="flex-1 px-5 py-3 bg-gradient-to-r from-azure-primary to-accent-cyan text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-azure-primary/25 transition-smooth btn-press flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Partager</span>
                 </button>
             </div>
         </div>
-        
-        <!-- Modal Paramètres -->
-        <div id="settingsModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-dark-900 rounded-2xl border border-slate-700 w-full max-w-md p-6 fade-in">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold">Paramètres</h3>
-                    <button id="closeSettingsBtn" class="p-2 hover:bg-slate-800 rounded-lg transition">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md p-8 animate-fadeSlideIn shadow-2xl">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text">Paramètres</h3>
+                    <p class="text-sm text-gray-500 mt-1">Configuration de l'application</p>
                 </div>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">
-                            <i class="fa-solid fa-key mr-2"></i>Clé API OpenAI
-                        </label>
-                        <input type="password" id="apiKeyInput" placeholder="sk-..." 
-                               class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:border-primary-500 transition">
-                        <p class="text-xs text-slate-500 mt-2">
-                            Obtenez votre clé sur <a href="https://platform.openai.com" class="text-primary-500 hover:underline">platform.openai.com</a>
-                        </p>
+                <button id="closeSettingsBtn" class="p-2.5 hover:bg-gray-100 rounded-xl transition-smooth text-gray-500">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                            <i class="fa-solid fa-key text-amber-500 text-sm"></i>
+                        </div>
+                        <span>Clé API OpenAI</span>
+                    </label>
+                    <input type="password" id="apiKeyInput" placeholder="sk-..."
+                           class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-azure-primary/30 focus:border-azure-primary transition-smooth">
+                    <p class="text-xs text-gray-500 mt-3 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-azure-primary"></i>
+                        <span>Obtenez votre clé sur <a href="https://platform.openai.com" class="text-azure-primary hover:underline">platform.openai.com</a></span>
+                    </p>
+                </div>
+
+                <button id="saveApiKeyBtn" class="w-full bg-gradient-to-r from-azure-primary to-accent-cyan hover:shadow-lg hover:shadow-azure-primary/25 text-white py-3.5 rounded-xl font-semibold transition-smooth btn-press">
+                    <i class="fa-solid fa-check mr-2"></i>Sauvegarder
+                </button>
+
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200"></div>
                     </div>
-                    
-                    <button id="saveApiKeyBtn" class="w-full bg-primary-600 hover:bg-primary-500 py-3 rounded-lg font-semibold transition">
-                        Sauvegarder
+                    <div class="relative flex justify-center">
+                        <span class="px-3 text-xs text-gray-500 bg-white">Autres options</span>
+                    </div>
+                </div>
+
+                <button id="openOutputBtn" class="w-full bg-gray-50 border border-gray-200 hover:border-azure-primary hover:bg-azure-primary/5 py-3.5 rounded-xl font-medium transition-smooth flex items-center justify-center gap-3 btn-press text-gray-700 hover:text-azure-primary">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>Ouvrir le dossier de sortie</span>
+                </button>
+
+                <button id="changeDepartmentBtn" class="w-full bg-gray-50 border border-gray-200 hover:border-amber-500 hover:bg-amber-50 py-3.5 rounded-xl font-medium transition-smooth flex items-center justify-center gap-3 btn-press text-gray-700 hover:text-amber-600">
+                    <i class="fa-solid fa-building-user"></i>
+                    <span>Changer de département</span>
+                </button>
+
+                <button id="showShortcutsBtn" class="w-full bg-gray-50 border border-gray-200 hover:border-purple-500 hover:bg-purple-50 py-3.5 rounded-xl font-medium transition-smooth flex items-center justify-center gap-3 btn-press text-gray-700 hover:text-purple-600">
+                    <i class="fa-solid fa-keyboard"></i>
+                    <span>Raccourcis clavier</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-white/90 backdrop-blur-md z-50 flex items-center justify-center">
+        <div class="text-center animate-fadeSlideIn">
+            <div class="relative w-24 h-24 mx-auto mb-6">
+                <div class="absolute inset-0 rounded-full border-4 border-gray-200"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-azure-primary border-r-accent-cyan animate-spin-gradient"></div>
+                <div class="absolute inset-2 rounded-full bg-white flex items-center justify-center shadow-inner p-2">
+                    <img src="../assets/Logo.png" alt="QuickFlow" class="w-12 h-12 object-contain animate-pulse">
+                </div>
+            </div>
+            <p id="loadingText" class="text-xl font-semibold gradient-text">Chargement...</p>
+            <p class="text-sm text-gray-500 mt-2">Veuillez patienter</p>
+        </div>
+    </div>
+
+    <!-- Profile Selection Modal (First Launch) -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg p-8 animate-fadeSlideIn shadow-2xl">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-azure-primary to-accent-cyan flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-building-user text-white text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold gradient-text mb-2">Bienvenue sur QuickFlow!</h3>
+                <p class="text-gray-500">Sélectionnez votre département pour commencer</p>
+            </div>
+
+            <div id="profileDepartments" class="grid grid-cols-2 gap-3 mb-6">
+                <!-- Départements générés dynamiquement -->
+            </div>
+
+            <p class="text-xs text-gray-400 text-center">
+                <i class="fa-solid fa-info-circle mr-1"></i>
+                Vous pourrez changer de département dans les paramètres
+            </p>
+        </div>
+    </div>
+
+    <!-- Lightbox for Image Zoom -->
+    <div id="lightbox" class="hidden fixed inset-0 bg-black/95 z-50 flex items-center justify-center">
+        <button id="closeLightbox" class="absolute top-6 right-6 text-white/80 hover:text-white text-3xl transition-colors z-10">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button id="lightboxPrev" class="absolute left-6 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl transition-colors">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="lightboxNext" class="absolute right-6 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl transition-colors">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div class="max-w-[90vw] max-h-[85vh] flex flex-col items-center">
+            <img id="lightboxImage" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl">
+            <div class="mt-4 text-center">
+                <p id="lightboxCaption" class="text-white font-medium text-lg"></p>
+                <p id="lightboxCounter" class="text-white/60 text-sm mt-1"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Annotation Editor Modal -->
+    <div id="annotationModal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col">
+        <!-- Header with tools -->
+        <div class="bg-gray-900 border-b border-gray-700 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <h3 class="text-white font-bold text-lg">
+                        <i class="fa-solid fa-pen-ruler mr-2 text-azure-light"></i>
+                        Annoter l'image
+                    </h3>
+                    <span id="annotationStepLabel" class="text-gray-400 text-sm">Étape 1</span>
+                </div>
+
+                <!-- Annotation Tools -->
+                <div class="flex items-center gap-2 bg-gray-800 rounded-xl p-2">
+                    <button id="toolArrow" class="annotation-tool active px-4 py-2 rounded-lg text-white hover:bg-azure-primary transition-colors" data-tool="arrow" title="Flèche (A)">
+                        <i class="fa-solid fa-arrow-right"></i>
                     </button>
-                    
-                    <hr class="border-slate-700">
-                    
-                    <button id="openOutputBtn" class="w-full bg-slate-800 hover:bg-slate-700 py-3 rounded-lg font-medium transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-folder-open"></i> Ouvrir le dossier de sortie
+                    <button id="toolCircle" class="annotation-tool px-4 py-2 rounded-lg text-white hover:bg-azure-primary transition-colors" data-tool="circle" title="Cercle (C)">
+                        <i class="fa-regular fa-circle"></i>
+                    </button>
+                    <button id="toolRect" class="annotation-tool px-4 py-2 rounded-lg text-white hover:bg-azure-primary transition-colors" data-tool="rect" title="Rectangle (R)">
+                        <i class="fa-regular fa-square"></i>
+                    </button>
+                    <button id="toolText" class="annotation-tool px-4 py-2 rounded-lg text-white hover:bg-azure-primary transition-colors" data-tool="text" title="Texte (T)">
+                        <i class="fa-solid fa-font"></i>
+                    </button>
+                    <div class="w-px h-8 bg-gray-600 mx-2"></div>
+                    <button id="toolHighlight" class="annotation-tool px-4 py-2 rounded-lg text-white hover:bg-azure-primary transition-colors" data-tool="highlight" title="Surligner (H)">
+                        <i class="fa-solid fa-highlighter"></i>
+                    </button>
+                </div>
+
+                <!-- Color picker and stroke -->
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-400 text-sm">Couleur:</span>
+                        <div class="flex gap-1">
+                            <button class="color-btn w-7 h-7 rounded-full bg-red-500 border-2 border-white ring-2 ring-transparent hover:ring-azure-light transition-all" data-color="#EF4444"></button>
+                            <button class="color-btn w-7 h-7 rounded-full bg-yellow-400 border-2 border-transparent hover:border-white transition-all" data-color="#FACC15"></button>
+                            <button class="color-btn w-7 h-7 rounded-full bg-green-500 border-2 border-transparent hover:border-white transition-all" data-color="#22C55E"></button>
+                            <button class="color-btn w-7 h-7 rounded-full bg-azure-primary border-2 border-transparent hover:border-white transition-all" data-color="#0078D4"></button>
+                            <button class="color-btn w-7 h-7 rounded-full bg-white border-2 border-transparent hover:border-azure-light transition-all" data-color="#FFFFFF"></button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-400 text-sm">Épaisseur:</span>
+                        <input type="range" id="strokeWidth" min="2" max="10" value="3" class="w-20 accent-azure-primary">
+                        <span id="strokeWidthValue" class="text-white text-sm w-6">3</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button id="undoAnnotation" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors" title="Annuler (Ctrl+Z)">
+                        <i class="fa-solid fa-undo"></i>
+                    </button>
+                    <button id="clearAnnotations" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors" title="Tout effacer">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <div class="w-px h-8 bg-gray-600"></div>
+                    <button id="cancelAnnotation" class="px-5 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
+                        Annuler
+                    </button>
+                    <button id="saveAnnotation" class="px-5 py-2 bg-azure-primary hover:bg-azure-gradient text-white rounded-lg transition-colors font-medium">
+                        <i class="fa-solid fa-check mr-2"></i>
+                        Appliquer
                     </button>
                 </div>
             </div>
         </div>
-        
-        <!-- Loading overlay -->
-        <div id="loadingOverlay" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div class="text-center">
-                <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p id="loadingText" class="text-lg font-semibold">Chargement...</p>
+
+        <!-- Canvas Container -->
+        <div class="flex-1 flex items-center justify-center p-8 overflow-hidden">
+            <div id="canvasContainer" class="relative bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+                <canvas id="annotationCanvas" class="block"></canvas>
             </div>
         </div>
-        
-    </main>
-    
+
+        <!-- Text Input (hidden by default) -->
+        <input type="text" id="annotationTextInput"
+               class="hidden fixed bg-transparent border-2 border-azure-primary text-white font-bold px-2 py-1 outline-none z-[60]"
+               placeholder="Tapez votre texte..."
+               style="font-size: 18px;">
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[70] space-y-3 pointer-events-none">
+        <!-- Toasts seront ajoutés dynamiquement -->
+    </div>
+
+    <!-- Keyboard Shortcuts Help -->
+    <div id="shortcutsModal" class="hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md p-8 animate-fadeSlideIn shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold gradient-text">Raccourcis clavier</h3>
+                <button id="closeShortcutsModal" class="p-2 hover:bg-gray-100 rounded-xl transition-smooth text-gray-500">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Sauvegarder</span>
+                    <kbd class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-mono">Ctrl+S</kbd>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Nouvelle procédure</span>
+                    <kbd class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-mono">Ctrl+N</kbd>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Rechercher</span>
+                    <kbd class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-mono">Ctrl+F</kbd>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Mode sombre</span>
+                    <kbd class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-mono">Ctrl+D</kbd>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Aide raccourcis</span>
+                    <kbd class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-mono">?</kbd>
+                </div>
+                <div class="flex justify-between items-center py-2">
+                    <span class="text-gray-600">Fermer modal</span>
+                    <kbd class="px-3 py-1 bg-gray-100 rounded-lg text-sm font-mono">Escape</kbd>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="./app.js"></script>
 </body>
 </html>
